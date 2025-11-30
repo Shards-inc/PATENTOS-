@@ -1,0 +1,5 @@
+{
+  "name": "PatentOS - Autonomous IP Agent",
+  "description": "An autonomous agentic interface that clones the Google Patents experience to identify expiring IP and UK-replicable technology opportunities.",
+  "requestFramePermissions": []
+}

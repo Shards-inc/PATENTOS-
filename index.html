@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PatentOS | Autonomous IP Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+      :root {
+        --neon-blue: #00f3ff;
+        --neon-purple: #bc13fe;
+        --neon-red: #ff2a6d;
+        --void-bg: #050505;
+        --glass-border: rgba(255, 255, 255, 0.1);
+      }
+
+      body {
+        font-family: 'Rajdhani', sans-serif;
+        background-color: var(--void-bg);
+        color: #e0e0e0;
+        overflow-x: hidden;
+        perspective: 1000px;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 2px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--neon-blue);
+      }
+
+      /* 3D Engine & Animation Utils */
+      .perspective-container {
+        perspective: 2000px;
+        transform-style: preserve-3d;
+      }
+
+      .preserve-3d {
+        transform-style: preserve-3d;
+      }
+
+      /* Animated Background Grid */
+      .grid-bg {
+        background-image: 
+          linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        transform-origin: center top;
+        animation: grid-move 30s linear infinite;
+        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+      }
+
+      @keyframes grid-move {
+        0% { transform: perspective(1000px) rotateX(60deg) translateY(0); }
+        100% { transform: perspective(1000px) rotateX(60deg) translateY(50px); }
+      }
+
+      /* Holographic Card Logic */
+      .holo-card {
+        background: rgba(10, 15, 30, 0.4);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(0, 243, 255, 0.1);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        transform-style: preserve-3d;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .holo-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: skewX(-25deg);
+        transition: 0.5s;
+        pointer-events: none;
+      }
+
+      .holo-card:hover::after {
+        left: 200%;
+        transition: 0.7s ease-in-out;
+      }
+
+      .holo-card:hover {
+        transform: translateY(-5px) scale(1.01) rotateX(2deg);
+        border-color: rgba(0, 243, 255, 0.4);
+        box-shadow: 0 10px 40px rgba(0, 243, 255, 0.15);
+      }
+
+      /* Text Effects */
+      .text-glow {
+        text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
+      }
+      
+      .glitch-text:hover {
+        animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+        color: var(--neon-blue);
+      }
+
+      @keyframes glitch-anim {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 2px); }
+        40% { transform: translate(-2px, -2px); }
+        60% { transform: translate(2px, 2px); }
+        80% { transform: translate(2px, -2px); }
+        100% { transform: translate(0); }
+      }
+
+      /* CRT Scanline Overlay */
+      .scanline {
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.1) 50%,
+          rgba(0,0,0,0.1)
+        );
+        background-size: 100% 4px;
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        pointer-events: none;
+        z-index: 10;
+        opacity: 0.4;
+      }
+
+      /* Custom Animations */
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      .animate-float { animation: float 6s ease-in-out infinite; }
+
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+        50% { box-shadow: 0 0 25px rgba(0, 243, 255, 0.6); }
+      }
+      .animate-pulse-glow { animation: pulse-glow 3s infinite; }
+
+      @keyframes slide-in-right {
+        0% { transform: translateX(100%) skewX(-5deg); opacity: 0; }
+        100% { transform: translateX(0) skewX(0); opacity: 1; }
+      }
+      .animate-slide-in-right { animation: slide-in-right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+      @keyframes spin-slow {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .animate-spin-slow { animation: spin-slow 8s linear infinite; }
+       
+      @keyframes spin-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+      }
+      .animate-spin-reverse { animation: spin-reverse 12s linear infinite; }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-markdown": "https://aistudiocdn.com/react-markdown@^10.1.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "uuid": "https://aistudiocdn.com/uuid@^13.0.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
